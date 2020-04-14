@@ -151,3 +151,13 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.geom_valide IS 'Géométrie validée';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.geom IS 'Géométrie (point)';
 
+-- Ajout des données de test
+INSERT INTO met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo (
+	osm_id, num_finess, site_nom, site_nom2, site_type, 
+	adresse, numcom, nomcom, code_postal,
+	niveau, divers_commentaires, geom_valide, geom
+)
+SELECT  
+	etab_mobil, emergency, etab_mob_1, building, etab_mob_2,
+	ref_fr_naf, null, etab_mob_3, null,
+	etab_mob_4,null, false, ST_PointOnSurface(geom) FROM z_maj.etab_mobilise_c19_epsg2154;
