@@ -89,3 +89,21 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergem
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.divers_commentaires IS 'Divers : Commentaires';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom_valide IS 'Géométrie validée';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom IS 'Géométrie (point)';
+
+
+-- Jeu de données test
+INSERT INTO met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo (
+	site_code, site_nom, site_nom2, adresse, numcom, nomcom, code_postal, 
+	caract_site_hebergement, caract_site_hebergement_transport_centre_hospitalier,
+	 geom_valide, geom) 
+SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
+	CASE 
+      WHEN t1.caract_site_hebergement='oui'  THEN true
+      ELSE false
+END, CASE 
+      WHEN t1.caract_site_hebergement_transport_centre_hospitalier='oui'  THEN true
+      ELSE false
+END, true, t2.geom 
+FROM z_maj.covid19_lieux_accueil_et_hebergement t1,
+	(SELECT code_uai, lib_v2, type_, adresse, cp, tel, numcom, nomcom, geom FROM met_lyc.m_lyc_public_adresse) t2
+WHERE t1.site_code = t2.code_uai;
