@@ -8,3 +8,7 @@
 -- met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo
 GRANT ALL ON TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo TO "pre-sig-usr";
 GRANT SELECT ON TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo TO "pre-sig-ro";
+
+-- met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo
+GRANT ALL ON TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo TO "pre-sig-usr";
+GRANT SELECT ON TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo TO "pre-sig-ro";
