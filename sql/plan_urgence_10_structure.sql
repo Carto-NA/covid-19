@@ -11,7 +11,7 @@
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
--- Table: met_plan_urgence.m_plan_urgence_na_geo
+-- Table: met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo
 
 -- DROP TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo;
 CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo
@@ -107,3 +107,47 @@ END, true, t2.geom
 FROM z_maj.covid19_lieux_accueil_et_hebergement t1,
 	(SELECT code_uai, lib_v2, type_, adresse, cp, tel, numcom, nomcom, geom FROM met_lyc.m_lyc_public_adresse) t2
 WHERE t1.site_code = t2.code_uai;
+
+
+------------------------------------------------------------------------
+-- Table: met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo
+
+-- DROP TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo;
+CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo
+(
+	id serial NOT NULL,
+	osm_id character varying(2O),
+	num_finess character varying(9),
+	site_nom character varying(255),
+	site_nom2 character varying(255),
+	site_type character varying(10),
+	adresse character varying(255),
+	numcom character varying(5),
+	nomcom character varying(255),
+	code_postal character varying(5),
+	niveau character varying(50),
+	divers_commentaires text,
+	geom_valide  boolean DEFAULT false,
+	geom geometry(Point,2154),
+    CONSTRAINT m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo_pkey PRIMARY KEY (id),
+    CONSTRAINT m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo_uniq UNIQUE (osm_id, num_finess)
+);
+
+--
+COMMENT ON TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo IS 'Plan urgence : Hôpitaux de Nouvelle-Aquitaine mobilisés pour le plan d'urgence';
+
+--
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.id IS 'Identifiant';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.osm_id IS 'Code OSM';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.num_finess IS 'Numéro FINESS de l''établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_nom IS 'Nom de l'établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_nom IS 'Nom 2 de l'établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.adresse IS 'Adresse de l''établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.numcom IS 'Code INSEE du site';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.nomcom IS 'Nom de la commune';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.code_postal IS 'Code postal de la commune';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.niveau IS 'Niveau d''intervention';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.divers_commentaires IS 'Divers : Commentaires';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom IS 'Géométrie (point)';
+
