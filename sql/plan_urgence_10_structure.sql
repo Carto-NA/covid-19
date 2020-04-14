@@ -116,7 +116,7 @@ WHERE t1.site_code = t2.code_uai;
 CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo
 (
 	id serial NOT NULL,
-	osm_id character varying(2O),
+	osm_id character varying(20),
 	num_finess character varying(9),
 	site_nom character varying(255),
 	site_nom2 character varying(255),
@@ -129,25 +129,25 @@ CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo
 	divers_commentaires text,
 	geom_valide  boolean DEFAULT false,
 	geom geometry(Point,2154),
-    CONSTRAINT m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo_pkey PRIMARY KEY (id),
-    CONSTRAINT m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo_uniq UNIQUE (osm_id, num_finess)
+    CONSTRAINT m_plan_urgence_covid19_hopitaux_mobilises_na_geo_pkey PRIMARY KEY (id),
+    CONSTRAINT m_plan_urgence_covid19_hopitaux_mobilises_na_geo_uniq UNIQUE (osm_id, num_finess)
 );
 
 --
-COMMENT ON TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo IS 'Plan urgence : Hôpitaux de Nouvelle-Aquitaine mobilisés pour le plan d'urgence';
+COMMENT ON TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo IS 'Plan urgence : Hôpitaux de Nouvelle-Aquitaine mobilisés pour le plan d''urgence';
 
 --
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.id IS 'Identifiant';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.osm_id IS 'Code OSM';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.num_finess IS 'Numéro FINESS de l''établissement';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_nom IS 'Nom de l'établissement';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_nom IS 'Nom 2 de l'établissement';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.adresse IS 'Adresse de l''établissement';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.numcom IS 'Code INSEE du site';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.nomcom IS 'Nom de la commune';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.code_postal IS 'Code postal de la commune';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.niveau IS 'Niveau d''intervention';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.divers_commentaires IS 'Divers : Commentaires';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom_valide IS 'Géométrie validée';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom IS 'Géométrie (point)';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.id IS 'Identifiant';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.osm_id IS 'Code OSM';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.num_finess IS 'Numéro FINESS de l''établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.site_nom IS 'Nom de l''établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.site_nom IS 'Nom 2 de l''établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.adresse IS 'Adresse de l''établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.numcom IS 'Code INSEE du site';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.nomcom IS 'Nom de la commune';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.code_postal IS 'Code postal de la commune';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.niveau IS 'Niveau d''intervention';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.divers_commentaires IS 'Divers : Commentaires';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.geom IS 'Géométrie (point)';
 
