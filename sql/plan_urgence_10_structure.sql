@@ -19,6 +19,8 @@ CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_n
 	id serial NOT NULL,
 	site_code character varying(15),
 	site_nom character varying(255),
+	site_nom2 character varying(255),
+	site_ouvert boolean DEFAULT false,
 	adresse character varying(255),
 	numcom character varying(5),
 	nomcom character varying(255),
@@ -58,6 +60,7 @@ COMMENT ON TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergeme
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.id IS 'Identifiant';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_code IS 'Code de l''établissement ou site';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_nom IS 'Nom de l''établissement ou du site';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_ouvert IS 'Indique si le site est ouvert';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.adresse IS 'Le site propose un hébergement';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.numcom IS 'Code INSEE du site';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.nomcom IS 'Nom de la commune';
