@@ -21,6 +21,7 @@ CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_n
 	site_nom character varying(255),
 	site_nom2 character varying(255),
 	site_ouvert boolean DEFAULT false,
+	site_nb_place integer,
 	adresse character varying(255),
 	numcom character varying(5),
 	nomcom character varying(255),
@@ -35,6 +36,7 @@ CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_n
 	caract_site_hebergement_acces_nuit boolean DEFAULT false,
 	caract_site_hebergement_desc character varying(255),
 	caract_site_hebergement_horaire character varying(255),
+	caract_site_hebergement_tps_trajet character varying(2),
 	caract_site_hebergement_transport_centre_hospitalier boolean,
 	caract_site_hebergement_transport_centre_hospitalier_desc text,
 	caract_site_hebergement_commentaire text,
@@ -47,6 +49,8 @@ CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_n
 	caract_site_restaurant_contact_mail character varying(255),
 	caract_site_restaurant_commentaire text,
 	divers_commentaires text,
+	date_import date,
+	date_maj date,
 	geom_valide  boolean DEFAULT false,
 	geom geometry(Point,2154),
     CONSTRAINT m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo_pkey PRIMARY KEY (id),
@@ -61,6 +65,7 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergem
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_code IS 'Code de l''établissement ou site';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_nom IS 'Nom de l''établissement ou du site';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_ouvert IS 'Indique si le site est ouvert';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.site_nb_place IS 'Indique la capacité d''accueil en internat';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.adresse IS 'Le site propose un hébergement';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.numcom IS 'Code INSEE du site';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.nomcom IS 'Nom de la commune';
@@ -75,6 +80,7 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergem
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_hebergement_acces_nuit IS 'L''hébergement est-t-il accessible la nuit';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_hebergement_desc IS 'Descriptio de l''hébergement';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_hebergement_horaire IS 'Horaires d''accès à l''hébergement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_hebergement_tps_trajet IS 'Temps de trajet en voiture depuis le Centre Hospitalier';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_hebergement_transport_centre_hospitalier IS 'Possibilité de transport entre l''hébergement et le centre hospitalié';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_hebergement_transport_centre_hospitalier_desc IS 'Description du transport entre les sites';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_hebergement_commentaire IS 'Commentaire sur l''hébergement';
@@ -87,6 +93,8 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergem
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_restaurant_horaire IS 'Horaires d''accès à la restauration';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.caract_site_restaurant_commentaire IS 'Commentaire sur la restauration';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.divers_commentaires IS 'Divers : Commentaires';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.date_maj IS 'Date de mise à jour';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom_valide IS 'Géométrie validée';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom IS 'Géométrie (point)';
 
@@ -95,7 +103,7 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergem
 INSERT INTO met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo (
 	site_code, site_nom, site_nom2, adresse, numcom, nomcom, code_postal, 
 	caract_site_hebergement, caract_site_hebergement_transport_centre_hospitalier,
-	 geom_valide, geom) 
+	date_import, geom_valide, geom) 
 SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
 	CASE 
       WHEN t1.caract_site_hebergement='oui'  THEN true
@@ -103,7 +111,7 @@ SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, t2.adresse, t2.
 END, CASE 
       WHEN t1.caract_site_hebergement_transport_centre_hospitalier='oui'  THEN true
       ELSE false
-END, true, t2.geom 
+END, true, '15/04/2020', t2.geom 
 FROM z_maj.covid19_lieux_accueil_et_hebergement t1,
 	(SELECT code_uai, lib_v2, type_, adresse, cp, tel, numcom, nomcom, geom FROM met_lyc.m_lyc_public_adresse) t2
 WHERE t1.site_code = t2.code_uai;
@@ -121,12 +129,15 @@ CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo
 	site_nom character varying(255),
 	site_nom2 character varying(255),
 	site_type character varying(10),
+	site_nb_place integer,
 	adresse character varying(255),
 	numcom character varying(5),
 	nomcom character varying(255),
 	code_postal character varying(5),
 	niveau character varying(50),
 	divers_commentaires text,
+	date_import date,
+	date_maj date,
 	geom_valide  boolean DEFAULT false,
 	geom geometry(Point,2154),
     CONSTRAINT m_plan_urgence_covid19_hopitaux_mobilises_na_geo_pkey PRIMARY KEY (id),
@@ -141,7 +152,8 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.osm_id IS 'Code OSM';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.num_finess IS 'Numéro FINESS de l''établissement';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.site_nom IS 'Nom de l''établissement';
-COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.site_nom IS 'Nom 2 de l''établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.site_nom2 IS 'Nom 2 de l''établissement';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.site_nb_place IS 'Nombre de place proposé';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.adresse IS 'Adresse de l''établissement';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.numcom IS 'Code INSEE du site';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.nomcom IS 'Nom de la commune';
@@ -155,9 +167,9 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_
 INSERT INTO met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo (
 	osm_id, num_finess, site_nom, site_nom2, site_type, 
 	adresse, numcom, nomcom, code_postal,
-	niveau, divers_commentaires, geom_valide, geom
+	niveau, divers_commentaires, date_import, geom_valide, geom
 )
 SELECT  
-	etab_mobil, emergency, etab_mob_1, building, etab_mob_2,
-	ref_fr_naf, null, etab_mob_3, null,
-	etab_mob_4,null, false, ST_PointOnSurface(geom) FROM z_maj.etab_mobilise_c19_epsg2154;
+	id, etab_mobil, etab_mob_1, name, etab_mob_2,
+	addr_stree, null, etab_mob_3, addr_postc,
+	etab_mob_4,null, now(), false, ST_PointOnSurface(geom) FROM z_maj.etab_mobilise_c19_epsg2154;
