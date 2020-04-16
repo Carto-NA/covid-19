@@ -101,18 +101,18 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergem
 
 -- Jeu de données test
 INSERT INTO met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo (
-	site_code, site_nom, site_nom2, adresse, numcom, nomcom, code_postal, 
+	site_code, site_nom, site_nom2, site_nb_place, adresse, numcom, nomcom, code_postal, 
 	caract_site_hebergement, caract_site_hebergement_transport_centre_hospitalier,
 	date_import, geom_valide, geom) 
-SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
+SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, t1.nb_place, t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
 	CASE 
       WHEN t1.caract_site_hebergement='oui'  THEN true
       ELSE false
 END, CASE 
       WHEN t1.caract_site_hebergement_transport_centre_hospitalier='oui'  THEN true
       ELSE false
-END, true, '15/04/2020', t2.geom 
-FROM z_maj.covid19_lieux_accueil_et_hebergement t1,
+END, true, now(), t2.geom 
+FROM (SELECT * FROM z_maj.covid19_lieux_accueil_et_hebergement WHERE etat='mise en œuvre') t1,
 	(SELECT code_uai, lib_v2, type_, adresse, cp, tel, numcom, nomcom, geom FROM met_lyc.m_lyc_public_adresse) t2
 WHERE t1.site_code = t2.code_uai;
 
@@ -160,16 +160,18 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.code_postal IS 'Code postal de la commune';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.niveau IS 'Niveau d''intervention';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.divers_commentaires IS 'Divers : Commentaires';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.date_maj IS 'Date de mise à jour';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.geom_valide IS 'Géométrie validée';
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo.geom IS 'Géométrie (point)';
 
 -- Ajout des données de test
 INSERT INTO met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo (
-	osm_id, num_finess, site_nom, site_nom2, site_type, 
+	osm_id, num_finess, site_nom, site_nom2, site_type, site_nb_place,
 	adresse, numcom, nomcom, code_postal,
 	niveau, divers_commentaires, date_import, geom_valide, geom
 )
 SELECT  
-	id, etab_mobil, etab_mob_1, name, etab_mob_2,
+	id, etab_mobil, etab_mob_1, name, etab_mob_2, cast(etab_mob_5 as integer),
 	addr_stree, null, etab_mob_3, addr_postc,
 	etab_mob_4,null, now(), false, ST_PointOnSurface(geom) FROM z_maj.etab_mobilise_c19_epsg2154;
