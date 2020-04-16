@@ -104,7 +104,7 @@ INSERT INTO met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na
 	site_code, site_nom, site_nom2, site_nb_place, adresse, numcom, nomcom, code_postal, 
 	caract_site_hebergement, caract_site_hebergement_transport_centre_hospitalier,
 	date_import, geom_valide, geom) 
-SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, t1.nb_place, t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
+SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, CAST(t1.nb_place AS integer), t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
 	CASE 
       WHEN t1.caract_site_hebergement='oui'  THEN true
       ELSE false
