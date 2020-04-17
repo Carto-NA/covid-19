@@ -21,13 +21,16 @@ CREATE TABLE met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_n
 	site_nom character varying(255),
 	site_nom2 character varying(255),
 	site_ouvert boolean DEFAULT false,
-	site_nb_place integer,
+	site_nb_place character varying(150),
+	temps_acces_voiture integer,
+	distance numeric,
 	adresse character varying(255),
 	numcom character varying(5),
 	nomcom character varying(255),
 	code_postal character varying(5),
 	site_contact_nom character varying(255),
 	site_contact_tel character varying(14),
+	site_contact_tel2 character varying(14),
 	site_contact_mail character varying(255),
 	caract_site_hebergement boolean DEFAULT false,
 	caract_site_hebergement_contact_nom character varying(255),
@@ -99,20 +102,23 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergem
 COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo.geom IS 'Géométrie (point)';
 
 
+
 -- Jeu de données test
 INSERT INTO met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo (
-	site_code, site_nom, site_nom2, site_nb_place, adresse, numcom, nomcom, code_postal, 
+	site_code, site_nom, site_nom2, site_nb_place, temps_acces_voiture, distance,
+	site_contact_nom, site_contact_tel, site_contact_tel2, site_contact_mail, adresse, numcom, nomcom, code_postal, 
 	caract_site_hebergement, caract_site_hebergement_transport_centre_hospitalier,
 	date_import, geom_valide, geom) 
-SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, CAST(t1.nb_place AS integer), t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
+SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, t1.nb_place, cast(t1.temps_acces_voiture as integer), cast(t1.distance as numeric),
+t1.contact, t1.telephone, t1.telephone2, t1.mail, t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
 	CASE 
       WHEN t1.caract_site_hebergement='oui'  THEN true
       ELSE false
 END, CASE 
       WHEN t1.caract_site_hebergement_transport_centre_hospitalier='oui'  THEN true
       ELSE false
-END, true, now(), t2.geom 
-FROM (SELECT * FROM z_maj.covid19_lieux_accueil_et_hebergement WHERE etat='mise en œuvre') t1,
+END, now(), true, t2.geom 
+FROM (SELECT * FROM z_maj.covid19_lieux_accueil_et_hebergement WHERE site_solicite = 'x') t1,
 	(SELECT code_uai, lib_v2, type_, adresse, cp, tel, numcom, nomcom, geom FROM met_lyc.m_lyc_public_adresse) t2
 WHERE t1.site_code = t2.code_uai;
 
