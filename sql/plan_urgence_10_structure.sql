@@ -105,11 +105,11 @@ COMMENT ON COLUMN met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergem
 
 -- Jeu de données test
 INSERT INTO met_plan_urgence.m_plan_urgence_covid19_lieux_accueil_hebergement_na_geo (
-	site_code, site_nom, site_nom2, site_nb_place, temps_acces_voiture, distance,
+	site_code, site_nom, site_nom2, site_ouvert, site_nb_place, temps_acces_voiture, distance,
 	site_contact_nom, site_contact_tel, site_contact_tel2, site_contact_mail, adresse, numcom, nomcom, code_postal, 
 	caract_site_hebergement, caract_site_hebergement_transport_centre_hospitalier,
 	date_import, geom_valide, geom) 
-SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, t1.nb_place, cast(t1.temps_acces_voiture as integer), cast(t1.distance as numeric),
+SELECT t1.site_code, t2.type_ || ' ' || t2.lib_v2, t1.site_nom2, true, t1.nb_place, cast(t1.temps_acces_voiture as integer), cast(t1.distance as numeric),
 t1.contact, t1.telephone, t1.telephone2, t1.mail, t2.adresse, t2.numcom, t2.nomcom, t2.cp, 
 	CASE 
       WHEN t1.caract_site_hebergement='oui'  THEN true
