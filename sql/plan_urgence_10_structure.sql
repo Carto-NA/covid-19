@@ -178,6 +178,6 @@ INSERT INTO met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo (
 	niveau, divers_commentaires, date_import, geom_valide, geom
 )
 SELECT  
-	id, etab_mobil, etab_mob_1, name, etab_mob_2, cast(etab_mob_5 as integer),
-	addr_stree, null, etab_mob_3, addr_postc,
-	etab_mob_4,null, now(), false, ST_PointOnSurface(geom) FROM z_maj.etab_mobilise_c19_epsg2154;
+	id, covid19_ce, covid19__1, name, covid19__2, cast(covid19__7 as integer),
+	addr_stree, covid19__3, covid19__5, covid19__4,
+	covid19__6,null, now(), false, ST_PointOnSurface(geom) FROM z_maj.etab_mobilise_c19_epsg2154;
