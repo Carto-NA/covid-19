@@ -191,4 +191,4 @@ INSERT INTO met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo (
 SELECT id, null, "name", "name", 'EPHAD', 10, 
 	'16 avenue Jean Jaurés', '86078', 'Civray', '86400',
 	'EPHAD', null, now(), true, ST_Transform(ST_PointOnSurface(geom),2154)
-FROM public."20200421_exportOverpass_EPHAD_LesCapucines";
+FROM z_maj."20200421_exportOverpass_EPHAD_LesCapucines";
