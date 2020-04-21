@@ -181,3 +181,14 @@ SELECT
 	id, covid19_ce, covid19__1, name, covid19__2, cast(covid19__7 as integer),
 	addr_stree, covid19__3, covid19__5, covid19__4,
 	covid19__6,null, now(), false, ST_PointOnSurface(geom) FROM z_maj.etab_mobilise_c19_epsg2154;
+
+-- Ajout du 21/04/2020
+INSERT INTO met_plan_urgence.m_plan_urgence_covid19_hopitaux_mobilises_na_geo (
+	osm_id, num_finess, site_nom, site_nom2, site_type, site_nb_place,
+	adresse, numcom, nomcom, code_postal,
+	niveau, divers_commentaires, date_import, geom_valide, geom
+)
+SELECT id, null, "name", "name", 'EPHAD', 10, 
+	'16 avenue Jean Jaurés', '86078', 'Civray', '86400',
+	'EPHAD', null, now(), true, ST_Transform(ST_PointOnSurface(geom),2154)
+FROM public."20200421_exportOverpass_EPHAD_LesCapucines";
